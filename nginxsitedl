@@ -1,0 +1,9 @@
+location ~ ^/download/(.+?)(/.*)?$ {
+    alias /home/$1$2;
+    set $user $1;
+    if ($remote_user = '') { break; }
+    if ($user != $remote_user) { return 403; }
+    auth_basic "Restricted";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+    index index.html index.htm; autoindex on;
+}
